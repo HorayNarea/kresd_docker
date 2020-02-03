@@ -7,16 +7,16 @@ RUN apk add --no-cache \
   knot-resolver \
   knot-resolver-mod-http \
   lua-filesystem \
-  && mkdir /cache \
-  && chown kresd /cache \
+  && mkdir /data \
+  && chown kresd /data \
   && touch /kresd.conf
 
 COPY check_and_gc.sh /check_and_gc.sh
 
 EXPOSE 53/udp 53/tcp
 
-VOLUME "/cache"
+VOLUME "/data"
 
-CMD /usr/sbin/kresd /cache -c /kresd.conf -f $(nproc)
+CMD /usr/sbin/kresd /data -c /kresd.conf -f $(nproc)
 
 HEALTHCHECK CMD /check_and_gc.sh || exit 1
