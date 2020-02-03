@@ -9,7 +9,7 @@ RUN apk add --no-cache \
   lua-filesystem \
   && mkdir /cache \
   && chown kresd /cache \
-  && touch /config
+  && touch /kresd.conf
 
 COPY check_and_gc.sh /check_and_gc.sh
 
@@ -17,6 +17,6 @@ EXPOSE 53/udp 53/tcp
 
 VOLUME "/cache"
 
-CMD /usr/sbin/kresd /cache -c /config -f $(nproc)
+CMD /usr/sbin/kresd /cache -c /kresd.conf -f $(nproc)
 
 HEALTHCHECK CMD /check_and_gc.sh || exit 1
