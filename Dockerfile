@@ -17,6 +17,6 @@ EXPOSE 53/udp 53/tcp
 
 VOLUME "/data"
 
-CMD /usr/sbin/kresd /data -c /kresd.conf -f $(nproc)
+CMD /usr/sbin/kresd /data -c /kresd.conf -f 1
 
 HEALTHCHECK CMD /check_and_gc.sh || exit 1
