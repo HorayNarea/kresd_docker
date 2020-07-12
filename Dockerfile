@@ -1,4 +1,4 @@
-FROM alpine:3.11
+FROM alpine:3.12
 LABEL maintainer "Thomas Sänger <thomas@gecko.space>"
 
 RUN apk add --no-cache \
@@ -6,7 +6,6 @@ RUN apk add --no-cache \
   ca-certificates \
   knot-resolver \
   knot-resolver-mod-http \
-  lua-filesystem \
   && mkdir /data \
   && chown kresd /data \
   && touch /kresd.conf
@@ -17,6 +16,6 @@ EXPOSE 53/udp 53/tcp 443/tcp 853/tcp 8453/tcp
 
 VOLUME "/data"
 
-CMD /usr/sbin/kresd /data -c /kresd.conf -f 1
+CMD /usr/sbin/kresd -n -c /kresd.conf /data
 
 HEALTHCHECK CMD /check_and_gc.sh || exit 1
