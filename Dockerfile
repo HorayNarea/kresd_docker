@@ -1,4 +1,4 @@
-FROM alpine:3.12
+FROM alpine:3.13
 LABEL maintainer "Thomas Sänger <thomas@gecko.space>"
 
 RUN apk add --no-cache \
@@ -12,7 +12,7 @@ RUN apk add --no-cache \
 
 COPY check_and_gc.sh /check_and_gc.sh
 
-EXPOSE 53/udp 53/tcp 443/tcp 853/tcp 8453/tcp
+EXPOSE 53/udp 53/tcp 8453/tcp
 
 VOLUME "/data"
 
