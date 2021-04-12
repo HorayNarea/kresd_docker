@@ -3,7 +3,6 @@ LABEL maintainer "Thomas Sänger <thomas@gecko.space>"
 
 RUN apk add --no-cache \
   bind-tools \
-  ca-certificates \
   knot-resolver \
   knot-resolver-mod-http \
   && mkdir /data \
