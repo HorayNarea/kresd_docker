@@ -34,7 +34,7 @@ jobs:
         run: docker save horaynarea/kresd_docker -o /images/kresd.tar.gz
 
       - name: Cache image
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: /images/kresd.tar.gz
           key: ${{ github.run_id }}-${{ github.run_number }}-kresd
@@ -52,7 +52,7 @@ jobs:
           sudo chmod 777 /images
 
       - name: Load kresd cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: /images/kresd.tar.gz
           key: ${{ github.run_id }}-${{ github.run_number }}-kresd
