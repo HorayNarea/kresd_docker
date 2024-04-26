@@ -10,56 +10,19 @@ on:
   push:
     branches:
       - main
-      - master
-
-env:
-  DOCKER_BUILDKIT: 1
 
 jobs:
-  build_kresd:
+  build_and_push:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
 
-      - name: Create folder for images
-        run: |
-          sudo mkdir -p /images
-          sudo chmod 777 /images
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
-      - name: Build image
-        run: docker build -t horaynarea/kresd_docker:latest .
-
-      - name: Save image
-        run: docker save horaynarea/kresd_docker -o /images/kresd.tar.gz
-
-      - name: Cache image
-        uses: actions/cache@v4
-        with:
-          path: /images/kresd.tar.gz
-          key: ${{ github.run_id }}-${{ github.run_number }}-kresd
-
-  push_images:
-    needs: build_kresd
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v4
-
-      - name: Create folder for images
-        run: |
-          sudo mkdir -p /images
-          sudo chmod 777 /images
-
-      - name: Load kresd cache
-        uses: actions/cache@v4
-        with:
-          path: /images/kresd.tar.gz
-          key: ${{ github.run_id }}-${{ github.run_number }}-kresd
-
-      - name: Load docker images
-        run: |
-          docker load -i /images/kresd.tar.gz
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
@@ -67,5 +30,12 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Push images
-        run: docker push horaynarea/kresd_docker:latest
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          platforms: |
+            linux/amd64
+            linux/arm64
+          push: true
+          tags: horaynarea/kresd_docker:latest
