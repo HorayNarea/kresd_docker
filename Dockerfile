@@ -1,5 +1,5 @@
 FROM alpine:3.19
-LABEL maintainer "Thomas Sänger <thomas@gecko.space>"
+LABEL maintainer="Thomas Sänger <thomas@gecko.space>"
 
 RUN apk add --no-cache \
   bind-tools \
